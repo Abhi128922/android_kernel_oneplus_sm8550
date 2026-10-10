@@ -54,6 +54,10 @@ static void (*context_struct_compute_av_fn)(struct policydb *policydb, struct co
                                             struct context *tcontext, u16 tclass, struct av_decision *avd,
                                             struct extended_perms *xperms) = NULL;
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 6, 0)
+struct selinux_state fake_state;
+#endif
+
 
 #ifndef CONFIG_KSU_SUSFS
 enum sel_inos {
@@ -453,6 +457,11 @@ static int ksu_selinux_hide_enable()
     if (!context_struct_compute_av_fn) {
         pr_warn("context_struct_compute_av not found!\n");
     }
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 6, 0)
+    fake_state.initialized = true;
+    fake_state.policy = backup_sepolicy;
+#endif
 
 
 
