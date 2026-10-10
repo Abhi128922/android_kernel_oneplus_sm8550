@@ -48,8 +48,6 @@
 *.usyms
 *.xz
 *.zst
-drivers/lindroid-drm/
-
 Module.symvers
 modules.order
 
